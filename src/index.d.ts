@@ -7,11 +7,11 @@ import {
 export type State = "INSUFFICIENT_DATA" | "OK" | "ALARM"
 
 type NameValue = Readonly<{
-  Name: string
-  Value: string
+  name: string
+  value: string
 }>
 
-type Trigger = Readonly<{
+interface ITrigger {
   MetricName: string
   Namespace: string
   StatisticType: string
@@ -24,7 +24,7 @@ type Trigger = Readonly<{
   Threshold: number
   TreatMissingData: string
   EvaluateLowSampleCountPercentile: string
-}>
+}
 
 export type Alarm = Readonly<{
   AlarmName: string
@@ -35,7 +35,7 @@ export type Alarm = Readonly<{
   StateChangeTime: string
   Region: string
   OldStateValue: State
-  Trigger: Trigger
+  Trigger: ITrigger
 }>
 
 export type SlackMsg = Readonly<{
