@@ -61,5 +61,6 @@ const groups = [
 
 const logGroupName = (t: ITrigger): string | undefined => {
   const group = groups.find(g => g.match(t))
-  return group ? `/aws/lambda/${group.functionName(t)}` : undefined
+  const fn = group ? group.functionName(t) : undefined
+  return fn ? `/aws/lambda/${fn}` : undefined
 }
