@@ -4,12 +4,12 @@
   "scripts": {
     "build": "sls webpack",
     "clean": "skripts clean src test scripts --pattern '*.js'",
-    "deploy": "npm test && sls deploy",
+    "deploy": "sls deploy",
     "format": "skripts prettier",
     "invoke": "ENVIRONMENT=local sls invoke local --function func",
     "lint": "skripts tslint",
     "jest": "ENVIRONMENT=test SLACK_WEBHOOK_URL=slack.com skripts jest",
-    "test": "npm run lint && npm run jest && sls package",
+    "test": "npm run lint && npm run jest && ENVIRONMENT=test SLACK_WEBHOOK_URL=slack.com sls package",
     "watch": "npm run jest -- --watch"
   },
   "dependencies": {
