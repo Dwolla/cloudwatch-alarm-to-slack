@@ -1,0 +1,45 @@
+stages:
+  build:
+    nodeLabel: nvm
+    steps:
+      - |
+        . ${NVM_DIR}/nvm.sh --no-use
+        nvm install
+        npm ci
+        npm test
+        ENVIRONMENT=test SLACK_WEBHOOK_URL=slack.com npm run build
+    filesToStash:
+      - "**"
+  deployDevInt:
+    nodeLabel: jetstream-deployer
+    secrets:
+      SLACK_WEBHOOK_URL: cloudwatch-alarm-to-slack/slack_webhook_url
+    steps:
+      - |
+        . ${NVM_DIR}/nvm.sh --no-use
+        nvm install
+        ENVIRONMENT=devint \
+        DEPLOYMENT_BUCKET=dwolla-encrypted \
+        npm run deploy
+  deployUat:
+    nodeLabel: jetstream-deployer
+    secrets:
+      SLACK_WEBHOOK_URL: cloudwatch-alarm-to-slack/slack_webhook_url
+    steps:
+      - |
+        . ${NVM_DIR}/nvm.sh --no-use
+        nvm install
+        ENVIRONMENT=uat \
+        DEPLOYMENT_BUCKET=dwolla-encrypted \
+        npm run deploy
+  deployProd:
+    nodeLabel: jetstream-deployer
+    secrets:
+      SLACK_WEBHOOK_URL: cloudwatch-alarm-to-slack/slack_webhook_url
+    steps:
+      - |
+        . ${NVM_DIR}/nvm.sh --no-use
+        nvm install
+        ENVIRONMENT=prod \
+        DEPLOYMENT_BUCKET=dwolla-encrypted \
+        npm run deploy
