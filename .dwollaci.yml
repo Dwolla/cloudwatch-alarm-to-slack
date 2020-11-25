@@ -11,7 +11,7 @@ stages:
     filesToStash:
       - "**"
   deployDevInt:
-    nodeLabel: jetstream-deployer
+    nodeLabel: nvm-deployer
     secrets:
       SLACK_WEBHOOK_URL: cloudwatch-alarm-to-slack/slack_webhook_url
     steps:
@@ -22,7 +22,7 @@ stages:
         DEPLOYMENT_BUCKET=dwolla-encrypted \
         npm run deploy
   deployUat:
-    nodeLabel: jetstream-deployer
+    nodeLabel: nvm-deployer
     secrets:
       SLACK_WEBHOOK_URL: cloudwatch-alarm-to-slack/slack_webhook_url
     steps:
@@ -33,7 +33,7 @@ stages:
         DEPLOYMENT_BUCKET=dwolla-encrypted \
         npm run deploy
   deployProd:
-    nodeLabel: jetstream-deployer
+    nodeLabel: nvm-deployer
     secrets:
       SLACK_WEBHOOK_URL: cloudwatch-alarm-to-slack/slack_webhook_url
     steps:
