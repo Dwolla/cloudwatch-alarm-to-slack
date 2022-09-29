@@ -19,7 +19,10 @@ module.exports = {
     }
   },
   provider: {
-    deploymentBucket: null,
+    deploymentBucket: {
+      name: "dwolla-encrypted",
+      serverSideEncryption: "AES256"
+    },
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1,
       SLACK_WEBHOOK_URL: "${ env: SLACK_WEBHOOK_URL }"

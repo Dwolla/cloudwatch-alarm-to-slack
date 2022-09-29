@@ -19,7 +19,6 @@ stages:
         . ${NVM_DIR}/nvm.sh --no-use
         nvm install
         ENVIRONMENT=devint \
-        DEPLOYMENT_BUCKET=dwolla-encrypted \
         npm run deploy
   deployUat:
     nodeLabel: nvm-deployer
@@ -30,7 +29,6 @@ stages:
         . ${NVM_DIR}/nvm.sh --no-use
         nvm install
         ENVIRONMENT=uat \
-        DEPLOYMENT_BUCKET=dwolla-encrypted \
         npm run deploy
   deployProd:
     nodeLabel: nvm-deployer
@@ -41,5 +39,4 @@ stages:
         . ${NVM_DIR}/nvm.sh --no-use
         nvm install
         ENVIRONMENT=prod \
-        DEPLOYMENT_BUCKET=dwolla-encrypted \
         npm run deploy
