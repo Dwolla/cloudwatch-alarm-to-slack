@@ -4,18 +4,18 @@ module.exports = {
     tags: {
       Creator: "serverless",
       Environment: "${self:provider.stage}",
-      Project: "${self:service.name}",
+      Project: "${self:service}",
       Team: "growth",
       DeployJobUrl: "${env:BUILD_URL, 'n/a'}",
       "org.label-schema.vcs-url": "${env:GIT_URL, 'n/a'}",
       "org.label-schema.vcs-ref": "${env:GIT_COMMIT, 'n/a'}"
     }
   },
-  frameworkVersion: ">=1.0.0 <3.0.0",
+  frameworkVersion: ">3.0.0",
   functions: {
     func: {
       handler: "src/handler.handle",
-      events: [{ sns: "${self:service.name}-topic-${self:provider.stage}" }]
+      events: [{ sns: "${self:service}-topic-${self:provider.stage}" }]
     }
   },
   provider: {
@@ -27,20 +27,23 @@ module.exports = {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1,
       SLACK_WEBHOOK_URL: "${ env: SLACK_WEBHOOK_URL }"
     },
-    iamRoleStatements: [
-      {
-        Effect: "Allow",
-        Action: ["logs:GetQueryResults"],
-        Resource: "*"
-      },
-      {
-        Effect: "Allow",
-        Action: ["logs:StartQuery"],
-        Resource:
-          "arn:aws:logs:${self:provider.region}:#{AWS::AccountId}:log-group:/aws/lambda/webhooks-*-lambda-${self:provider.stage}:*"
+    iam: {
+      role: {
+        statements: [
+          {
+            Effect: "Allow",
+            Action: ["logs:GetQueryResults"],
+            Resource: "*"
+          },
+          {
+            Effect: "Allow",
+            Action: ["logs:StartQuery"],
+            Resource:
+              "arn:aws:logs:${self:provider.region}:${aws:accountId}:log-group:/aws/lambda/webhooks-*-lambda-${self:provider.stage}:*"
+          }
+        ]
       }
-    ],
-    lambdaHashingVersion: "20201221",
+    },
     logRetentionInDays: 365,
     memorySize: 128,
     name: "aws",
@@ -52,11 +55,7 @@ module.exports = {
     timeout: 10
   },
   package: { individually: true },
-  plugins: [
-    "serverless-iam-roles-per-function",
-    "serverless-pseudo-parameters",
-    "serverless-webpack"
-  ],
+  plugins: ["serverless-iam-roles-per-function", "serverless-webpack"],
   service: "${file(./package.json):name}",
   vpc: null
 }
