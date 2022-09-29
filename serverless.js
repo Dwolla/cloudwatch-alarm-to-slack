@@ -1,4 +1,5 @@
 module.exports = {
+  cfnRole: null,
   custom: {
     tags: {
       Creator: "serverless",
@@ -11,6 +12,12 @@ module.exports = {
     }
   },
   frameworkVersion: ">=1.0.0 <3.0.0",
+  functions: {
+    func: {
+      handler: "src/handler.handle",
+      events: [{ sns: "${self:service.name}-topic-${self:provider.stage}" }]
+    }
+  },
   provider: {
     deploymentBucket: null,
     environment: {
@@ -48,10 +55,5 @@ module.exports = {
     "serverless-webpack"
   ],
   service: "${file(./package.json):name}",
-  functions: {
-    func: {
-      handler: "src/handler.handle",
-      events: [{ sns: "${self:service.name}-topic-${self:provider.stage}" }]
-    }
-  }
+  vpc: null
 }
