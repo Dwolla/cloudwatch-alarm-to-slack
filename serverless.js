@@ -1,5 +1,4 @@
 module.exports = {
-  cfnRole: process.env.SKRIPTS_CFN_ROLE || null,
   custom: {
     tags: {
       Creator: "serverless",
@@ -13,12 +12,7 @@ module.exports = {
   },
   frameworkVersion: ">=1.0.0 <3.0.0",
   provider: {
-    deploymentBucket: process.env.SKRIPTS_DEPLOYMENT_BUCKET
-      ? {
-          name: process.env.SKRIPTS_DEPLOYMENT_BUCKET,
-          serverSideEncryption: "AES256"
-        }
-      : null,
+    deploymentBucket: null,
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1,
       SLACK_WEBHOOK_URL: "${ env: SLACK_WEBHOOK_URL }"
@@ -54,13 +48,6 @@ module.exports = {
     "serverless-webpack"
   ],
   service: "${file(./package.json):name}",
-  vpc:
-    process.env.SKRIPTS_VPC_SECURITY_GROUPS && process.env.SKRIPTS_VPC_SUBNETS
-      ? {
-          securityGroupIds: process.env.SKRIPTS_VPC_SECURITY_GROUPS.split(","),
-          subnetIds: process.env.SKRIPTS_VPC_SUBNETS.split(",")
-        }
-      : null,
   functions: {
     func: {
       handler: "src/handler.handle",
