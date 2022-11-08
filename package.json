@@ -25,7 +25,7 @@
     "serverless": "3.22.0",
     "serverless-iam-roles-per-function": "^3.1.0",
     "serverless-webpack": "^5.3.5",
-    "skripts": "0.0.22",
+    "skripts": "0.10.0",
     "tslint": "^5.18.0",
     "typescript": "^3.5.3"
   },
