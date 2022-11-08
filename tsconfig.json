@@ -1,4 +1,7 @@
 {
   "extends": "./node_modules/skripts/base-tsconfig.json",
-  "include": ["src"]
+  "include": ["src"],
+  "compilerOptions": {
+    "strict": false
+  }
 }

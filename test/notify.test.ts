@@ -17,7 +17,21 @@ describe("notify", () => {
   color.mockReturnValue(COLOR);
   link.mockReturnValue(LINK);
   post.mockResolvedValue(RES);
-  const MSG = {
+  type Trigger = {
+    Namespace: string;
+  };
+  type MsgType = {
+    AWSAccountId: string;
+    AlarmDescription: null;
+    AlarmName?: string;
+    NewStateReason: string;
+    NewStateValue: string;
+    OldStateValue: string;
+    Region: string;
+    StateChangeTime: string;
+    Trigger?: Trigger;
+  };
+  const MSG: MsgType = {
     AWSAccountId: "111111111111",
     AlarmDescription: null,
     AlarmName: "log-error",
@@ -28,15 +42,15 @@ describe("notify", () => {
     StateChangeTime: "2019-02-19T18:34:04.271+0000",
     Trigger: { Namespace: "AWS/Lambda" },
   };
-  const evt = () => ({
-    Records: [{ Sns: { Message: JSON.stringify(MSG) } } as SNSEventRecord],
+  const evt = (message = MSG) => ({
+    Records: [{ Sns: { Message: JSON.stringify(message) } } as SNSEventRecord],
   });
 
   it("resolves to response", async () => {
     await expect(notify(evt())).resolves.toBe(RES);
 
     expect(color).toHaveBeenCalledWith(MSG.NewStateValue);
-    expect(link).toHaveBeenCalledWith(MSG.Trigger.Namespace, MSG.AlarmName);
+    expect(link).toHaveBeenCalledWith(MSG?.Trigger?.Namespace, MSG.AlarmName);
     expect(post).toHaveBeenCalledWith(
       "slack.com",
       JSON.stringify({

@@ -4,7 +4,13 @@ import { Alarm, SlackMsg } from ".";
 import { fetch } from "./fetcher";
 import { color, link } from "./mapper";
 
-const URL = process.env.SLACK_WEBHOOK_URL;
+const URL = () => {
+  if (process.env.SLACK_WEBHOOK_URL) {
+    return process.env.SLACK_WEBHOOK_URL;
+  } else {
+    throw new Error("must prove slack webhook url as env var");
+  }
+};
 
 export const notify = async (evt: SNSEvent): Promise<AxiosResponse> => {
   const a: Alarm = JSON.parse(evt.Records[0].Sns.Message);
@@ -24,5 +30,5 @@ export const notify = async (evt: SNSEvent): Promise<AxiosResponse> => {
     ],
   };
 
-  return await axios.post(URL, JSON.stringify(msg));
+  return await axios.post(URL(), JSON.stringify(msg));
 };
