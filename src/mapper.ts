@@ -1,17 +1,15 @@
-import { State } from "."
+const REGION = process.env.AWS_REGION || "us-west-2";
+const BASE_URL = "https://console.aws.amazon.com";
 
-const REGION = process.env.AWS_REGION || "us-west-2"
-const BASE_URL = "https://console.aws.amazon.com"
-
-export type State = "INSUFFICIENT_DATA" | "OK" | "ALARM"
+export type State = "INSUFFICIENT_DATA" | "OK" | "ALARM";
 
 export const color = (state?: State) =>
-  state === "ALARM" ? "danger" : state === "OK" ? "good" : "default"
+  state === "ALARM" ? "danger" : state === "OK" ? "good" : "default";
 
 export const link = (namespace: string, name: string): string =>
-  AWS_CONSOLE_URLS[namespace] || `${url("cloudwatch")}#s=Alarms&alarm=${name}`
+  AWS_CONSOLE_URLS[namespace] || `${url("cloudwatch")}#s=Alarms&alarm=${name}`;
 
-const url = (service: string) => `${BASE_URL}/${service}/home?region=${REGION}`
+const url = (service: string) => `${BASE_URL}/${service}/home?region=${REGION}`;
 
 // See https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/aws-services-cloudwatch-metrics.html
 const AWS_CONSOLE_URLS: { [k: string]: string } = {
@@ -24,5 +22,5 @@ const AWS_CONSOLE_URLS: { [k: string]: string } = {
   "AWS/ElasticBeanstalk": url("elasticbeanstalk"),
   "AWS/Lambda": url("lambda"),
   "AWS/S3": url("s3"),
-  "AWS/SQS": url("sqs")
-}
+  "AWS/SQS": url("sqs"),
+};

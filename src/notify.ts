@@ -1,14 +1,14 @@
-import { SNSEvent } from "aws-lambda"
-import axios, { AxiosResponse } from "axios"
-import { Alarm, SlackMsg } from "."
-import { fetch } from "./fetcher"
-import { color, link } from "./mapper"
+import { SNSEvent } from "aws-lambda";
+import axios, { AxiosResponse } from "axios";
+import { Alarm, SlackMsg } from ".";
+import { fetch } from "./fetcher";
+import { color, link } from "./mapper";
 
-const URL = process.env.SLACK_WEBHOOK_URL
+const URL = process.env.SLACK_WEBHOOK_URL;
 
 export const notify = async (evt: SNSEvent): Promise<AxiosResponse> => {
-  const a: Alarm = JSON.parse(evt.Records[0].Sns.Message)
-  if (!a.AlarmName || !a.Trigger) throw new Error("Invalid SNS message.")
+  const a: Alarm = JSON.parse(evt.Records[0].Sns.Message);
+  if (!a.AlarmName || !a.Trigger) throw new Error("Invalid SNS message.");
 
   const msg: SlackMsg = {
     attachments: [
@@ -19,10 +19,10 @@ export const notify = async (evt: SNSEvent): Promise<AxiosResponse> => {
         text: await fetch(a),
         title: a.AlarmName,
         title_link: link(a.Trigger.Namespace, a.AlarmName),
-        ts: new Date(a.StateChangeTime).getTime() / 1000
-      }
-    ]
-  }
+        ts: new Date(a.StateChangeTime).getTime() / 1000,
+      },
+    ],
+  };
 
-  return await axios.post(URL, JSON.stringify(msg))
-}
+  return await axios.post(URL, JSON.stringify(msg));
+};
