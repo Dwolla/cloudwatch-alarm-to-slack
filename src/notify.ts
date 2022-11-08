@@ -1,11 +1,10 @@
-import { envVar } from "@therockstorm/utils"
 import { SNSEvent } from "aws-lambda"
 import axios, { AxiosResponse } from "axios"
 import { Alarm, SlackMsg } from "."
 import { fetch } from "./fetcher"
 import { color, link } from "./mapper"
 
-const URL = envVar("SLACK_WEBHOOK_URL")
+const URL = process.env.SLACK_WEBHOOK_URL
 
 export const notify = async (evt: SNSEvent): Promise<AxiosResponse> => {
   const a: Alarm = JSON.parse(evt.Records[0].Sns.Message)

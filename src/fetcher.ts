@@ -1,4 +1,3 @@
-import { log, thrw } from "@therockstorm/utils"
 import asyncRetry from "async-retry"
 import CloudWatchLogs, {
   GetQueryResultsResponse
@@ -26,12 +25,14 @@ export const fetch = async (a: Alarm): Promise<string> => {
   const r = await asyncRetry<GetQueryResultsResponse>(
     async () => {
       const res = await cwl.getQueryResults({ queryId: id as string }).promise()
-      return res.status === "Running" ? thrw(new Error(res.status)) : res
+      return res.status === "Running"
+        ? console.error(new Error(res.status))
+        : res
     },
     { maxTimeout: 5000, minTimeout: 1000, retries: 5 }
   )
 
-  log(JSON.stringify(r, null, 2))
+  console.log(JSON.stringify(r, null, 2))
   return r.results && r.results.length
     ? `${a.NewStateReason}${
         r.results.map(

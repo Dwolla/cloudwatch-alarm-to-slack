@@ -13,7 +13,6 @@
     "watch": "npm run jest -- --watch"
   },
   "dependencies": {
-    "@therockstorm/utils": "^3.0.10",
     "async-retry": "^1.2.3",
     "axios": "^0.27.2",
     "source-map-support": "^0.5.12"
@@ -21,6 +20,7 @@
   "devDependencies": {
     "@types/async-retry": "^1.4.1",
     "aws-sdk": "^2.493.0",
+    "dotenv": "16.0.3",
     "husky": "^3.0.0",
     "serverless": "3.22.0",
     "serverless-iam-roles-per-function": "^3.1.0",
