@@ -23,9 +23,11 @@ export const fetch = async (a: Alarm): Promise<string> => {
   const r = await asyncRetry<GetQueryResultsResponse>(
     async () => {
       const res = await cwl.getQueryResults({ queryId: id as string }).promise()
-      return res.status === "Running"
-        ? console.error(new Error(res.status))
-        : res
+      if (res.status === "Running") {
+        throw new Error(res.status)
+      } else {
+        return res
+      }
     },
     { maxTimeout: 5000, minTimeout: 1000, retries: 5 }
   )
