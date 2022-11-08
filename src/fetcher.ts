@@ -1,8 +1,6 @@
-import asyncRetry from "async-retry"
-import CloudWatchLogs, {
-  GetQueryResultsResponse
-} from "aws-sdk/clients/cloudwatchlogs"
+import CloudWatchLogs, { GetQueryResultsResponse } from "aws-sdk/clients/cloudwatchlogs"
 import { Alarm, ITrigger } from "."
+import asyncRetry from 'async-retry'
 
 const TEN_MINS = 600000
 const cwl = new CloudWatchLogs()
@@ -34,12 +32,11 @@ export const fetch = async (a: Alarm): Promise<string> => {
 
   console.log(JSON.stringify(r, null, 2))
   return r.results && r.results.length
-    ? `${a.NewStateReason}${
-        r.results.map(
-          x =>
-            `\n${(x.find(y => y.field === "@message") || { value: "" }).value}`
-        )[0]
-      }`
+    ? `${a.NewStateReason}${r.results.map(
+      x =>
+        `\n${(x.find(y => y.field === "@message") || { value: "" }).value}`
+    )[0]
+    }`
     : a.NewStateReason
 }
 

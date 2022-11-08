@@ -29,7 +29,7 @@ describe("notify", () => {
     Trigger: { Namespace: "AWS/Lambda" }
   }
   const evt = () => ({
-    Records: [{ Sns: { Message: JSON.stringify(MSG) } } as SNSEventRecord]
+    Records: [{ Sns: { Message: JSON.stringify(MSG) } } as SNSEventRecord] 
   })
 
   it("resolves to response", async () => {
