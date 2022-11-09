@@ -1,4 +1,14 @@
 {
-  "extends": "./node_modules/skripts/base-tsconfig.json",
-  "include": ["src"]
-}
+    "compilerOptions": {
+      "esModuleInterop": true,
+      "lib": ["esnext"],
+      "moduleResolution": "node",
+      "noFallthroughCasesInSwitch": true,
+      "noImplicitReturns": true,
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
+      "resolveJsonModule": true,
+      "sourceMap": true,
+      "target": "es2018"
+    }
+  }

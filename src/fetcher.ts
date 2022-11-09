@@ -1,9 +1,6 @@
-import { log, thrw } from "@therockstorm/utils"
-import asyncRetry from "async-retry"
-import CloudWatchLogs, {
-  GetQueryResultsResponse
-} from "aws-sdk/clients/cloudwatchlogs"
+import CloudWatchLogs, { GetQueryResultsResponse } from "aws-sdk/clients/cloudwatchlogs"
 import { Alarm, ITrigger } from "."
+import asyncRetry from 'async-retry'
 
 const TEN_MINS = 600000
 const cwl = new CloudWatchLogs()
@@ -26,19 +23,22 @@ export const fetch = async (a: Alarm): Promise<string> => {
   const r = await asyncRetry<GetQueryResultsResponse>(
     async () => {
       const res = await cwl.getQueryResults({ queryId: id as string }).promise()
-      return res.status === "Running" ? thrw(new Error(res.status)) : res
+      if (res.status === "Running") {
+        throw new Error(res.status)
+      } else {
+        return res
+      }
     },
     { maxTimeout: 5000, minTimeout: 1000, retries: 5 }
   )
 
-  log(JSON.stringify(r, null, 2))
+  console.log(JSON.stringify(r, null, 2))
   return r.results && r.results.length
-    ? `${a.NewStateReason}${
-        r.results.map(
-          x =>
-            `\n${(x.find(y => y.field === "@message") || { value: "" }).value}`
-        )[0]
-      }`
+    ? `${a.NewStateReason}${r.results.map(
+      x =>
+        `\n${(x.find(y => y.field === "@message") || { value: "" }).value}`
+    )[0]
+    }`
     : a.NewStateReason
 }
 

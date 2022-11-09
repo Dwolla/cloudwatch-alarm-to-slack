@@ -1,5 +1,3 @@
-import { State } from "."
-
 const REGION = process.env.AWS_REGION || "us-west-2"
 const BASE_URL = "https://console.aws.amazon.com"
 
