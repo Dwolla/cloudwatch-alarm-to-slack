@@ -2,7 +2,8 @@ import { SNSEvent } from "aws-lambda"
 import "source-map-support/register"
 import { Res } from "."
 import { notify } from "./notify"
-require("dotenv").config()
+import dotenv from "dotenv"
+dotenv.config()
 
 export const handle = async (evt: SNSEvent): Promise<Res> => {
   console.log(JSON.stringify(evt))
@@ -20,7 +21,7 @@ export const handle = async (evt: SNSEvent): Promise<Res> => {
   }
 }
 
-const toRes = (body: object, statusCode: number = 200): Res => ({
+const toRes = (body: object, statusCode = 200): Res => ({
   body: JSON.stringify(body),
   statusCode
 })

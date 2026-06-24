@@ -10,7 +10,7 @@ describe("handler", () => {
   const toRes = (
     success: boolean,
     error?: string,
-    statusCode: number = 200
+    statusCode = 200
   ) => ({
     body: JSON.stringify({ error, success }),
     statusCode
