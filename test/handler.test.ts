@@ -17,22 +17,36 @@ describe("handler", () => {
   })
 
   it("resolves to true", async () => {
-    notify.mockResolvedValue({ status: 200 })
+    notify.mockResolvedValue([{ status: 200 }])
 
     await expect(handle(EVT)).resolves.toEqual(toRes(true))
 
     expect(notify).toHaveBeenCalledWith(EVT)
   })
 
+  it("resolves to true when every workspace returns 200", async () => {
+    notify.mockResolvedValue([{ status: 200 }, { status: 200 }])
+
+    await expect(handle(EVT)).resolves.toEqual(toRes(true))
+  })
+
   it("resolves to false", async () => {
     const status = 500
-    notify.mockResolvedValue({ status })
+    notify.mockResolvedValue([{ status }])
 
     await expect(handle(EVT)).resolves.toEqual(
       toRes(false, `Expected 200, got ${status}`)
     )
 
     expect(notify).toHaveBeenCalledWith(EVT)
+  })
+
+  it("reports which workspaces failed", async () => {
+    notify.mockResolvedValue([{ status: 200 }, { status: 404 }])
+
+    await expect(handle(EVT)).resolves.toEqual(
+      toRes(false, "Expected 200, got 404")
+    )
   })
 
   it("returns error on exception", async () => {

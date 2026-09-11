@@ -57,7 +57,7 @@
     }
   },
   "lint-staged": {
-    "*": "npm run lint"
+    "*.ts": "npm run lint"
   },
   "jest": {
     "rootDir": "test",

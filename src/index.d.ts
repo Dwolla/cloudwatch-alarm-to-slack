@@ -54,3 +54,8 @@ export type Res = Readonly<{
   statusCode: number
   body: string
 }>
+
+export type Destination = Readonly<{
+  name: string
+  url: string
+}>
