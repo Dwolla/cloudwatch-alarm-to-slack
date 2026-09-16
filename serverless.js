@@ -25,10 +25,7 @@ module.exports = {
     },
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1,
-      SLACK_WEBHOOK_URL: "${env:SLACK_WEBHOOK_URL}",
-      // Set to post to the NMI workspace as well during the cutover. Unset
-      // means Dwolla only, so deploys are unaffected until it is provided.
-      SLACK_WEBHOOK_URL_NMI: "${env:SLACK_WEBHOOK_URL_NMI, ''}"
+      SLACK_WEBHOOK_URL: "${env:SLACK_WEBHOOK_URL}"
     },
     iam: {
       role: {

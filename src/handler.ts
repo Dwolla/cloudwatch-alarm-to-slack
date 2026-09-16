@@ -9,13 +9,10 @@ export const handle = async (evt: SNSEvent): Promise<Res> => {
   console.log(JSON.stringify(evt))
   try {
     const res = await notify(evt)
-    const bad = res.filter(r => r.status !== 200)
-    const success = bad.length === 0
+    const success = res.status === 200
     console.log(success)
     return toRes({
-      error: success
-        ? undefined
-        : `Expected 200, got ${bad.map(r => r.status).join(", ")}`,
+      error: success ? undefined : `Expected 200, got ${res.status}`,
       success
     })
   } catch (err) {
